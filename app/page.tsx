@@ -25,7 +25,7 @@ export default function Home() {
 
         {/* Footer count */}
         <p className="mt-4 text-center text-xs text-neutral-400">
-          {todos.filter((t) => t.isDone).length} of {todos.length} completed
+          {todos.filter((t) => t.isDone).length} of {todos.length} completed &middot; {new Date().getFullYear()}
         </p>
       </div>
     </main>
