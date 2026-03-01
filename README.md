@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My To-Do App
+
+A minimal, full-stack to-do application built with Next.js 15 App Router and Tailwind CSS v4. All mutations are handled through Server Actions — no separate API routes needed.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | [Next.js 16](https://nextjs.org/) (App Router) |
+| Language | TypeScript |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
+| Icons | [lucide-react](https://lucide.dev/) |
+| Hosting | [Vercel](https://vercel.com/) |
+
+## Features
+
+- **Create** todos with a single inline form at the top of the list
+- **Edit** any todo's name and completion status via a modal
+- **Delete** todos with a confirmation modal
+- Server Actions for all mutations — no client-side fetch calls
+- Clean, minimal UI inspired by Linear / Notion
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Install & Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  actions/todo.ts       # Server Actions (create, update, delete)
+  components/
+    AddTodoForm.tsx     # Inline create form (client)
+    TodoList.tsx        # List with edit/delete triggers (client)
+    EditModal.tsx       # Edit modal overlay (client)
+    DeleteModal.tsx     # Delete confirmation modal (client)
+  page.tsx              # Home page (server component)
+  layout.tsx            # Root layout
+  globals.css           # Tailwind v4 + CSS variables
+db/
+  todo.ts               # Mock in-memory database
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚠️ Mock Database Limitation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`db/todo.ts` is an **in-memory array** used as a stand-in for a real database. It works perfectly for local development and demos.
 
-## Deploy on Vercel
+On Vercel (and any serverless platform), each Server Action runs in a short-lived function instance. The module-level array resets to its seed data on every cold start, so **changes do not persist across serverless invocations**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To add real persistence, replace `db/todo.ts` with a database client (e.g. [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres), [Supabase](https://supabase.com/), or [PlanetScale](https://planetscale.com/)).
